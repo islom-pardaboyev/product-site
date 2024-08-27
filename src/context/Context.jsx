@@ -7,12 +7,14 @@ const savedProds = [];
 
 const ACTIONS = {
   ADD: "add",
+  REMOVE: "remove",
 };
 
 export function MainContext({ children }) {
   const [showSideBar, setShowSideBar] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
+
   function reduce(state, action) {
     switch (action.type) {
       case ACTIONS.ADD:
@@ -22,11 +24,15 @@ export function MainContext({ children }) {
           return [...state, item];
         } else {
           toast.error("This Product is already added!");
-
           return [...state];
         }
+      case ACTIONS.REMOVE:
+        return state.filter((item) => item.id !== action.payload);
+      default:
+        return state;
     }
   }
+
   const [state, dispatch] = useReducer(reduce, savedProds);
 
   useEffect(() => {
@@ -37,6 +43,7 @@ export function MainContext({ children }) {
         setIsLoading(false);
       });
   }, []);
+
   return (
     <Context.Provider
       value={{

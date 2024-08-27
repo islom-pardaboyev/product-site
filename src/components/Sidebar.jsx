@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { FaAngleDoubleLeft } from "react-icons/fa";
+import { FaAngleDoubleLeft, FaTrash } from "react-icons/fa";
 import { Context } from "../context/Context";
 
 function Sidebar() {
-  const { showSideBar, setShowSideBar, state } = useContext(Context);
-  console.log(state.length);
+  const { showSideBar, setShowSideBar, state, ACTIONS, dispatch } =
+    useContext(Context);
 
   return (
     <div
@@ -32,16 +32,25 @@ function Sidebar() {
               <img
                 width={100}
                 onError={(e) =>
-                  (e.target.src =
-                    "https://placehold.co/100x100?text=Hello+World")
+                  (e.target.src = "https://placehold.co/100x100?text=Not+Found")
                 }
                 className="rounded-md"
                 src={item.images}
                 alt=""
               />
-              <div className="flex flex-col items-end">
-                <p className="line-clamp-1">{item.title}</p>
-                <p className="font-bold text-3xl">${item.price}</p>
+              <div className="flex items-center gap-3">
+                <div className="flex flex-col items-end">
+                  <p className="line-clamp-1">{item.title}</p>
+                  <p className="font-bold text-3xl">${item.price}</p>
+                </div>
+                <button
+                  onClick={() =>
+                    dispatch({ type: ACTIONS.REMOVE, payload: item.id })
+                  }
+                  className="size-7 rounded-md hover:opacity-70 flex items-center justify-center text-white bg-red-500"
+                >
+                  <FaTrash />
+                </button>
               </div>
             </div>
           ))
